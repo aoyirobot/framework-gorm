@@ -124,11 +124,7 @@ func InternalGenerator(name string) error {
 		return err
 	}
 	path := getCurrentPath()
-	getwd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	fcs.WriteString("package service\n\nimport (\n\t\"" + getwd + "/internal/api/store\"\n)\n\ntype Service interface {\n}\n\ntype service struct {\n\tfactory store.Factory\n}\n\nfunc NewService(factory store.Factory) Service {\n\treturn &service{\n\t\tfactory: factory,\n\t}\n}\n")
+	fcs.WriteString("package service\n\nimport (\n\t\"" + path + "/internal/api/store\"\n)\n\ntype Service interface {\n}\n\ntype service struct {\n\tfactory store.Factory\n}\n\nfunc NewService(factory store.Factory) Service {\n\treturn &service{\n\t\tfactory: factory,\n\t}\n}\n")
 	//生成中间件代码
 	fcm, err := os.Create("internal/pkg/middle/middle.go")
 	if err != nil {
