@@ -220,6 +220,16 @@ func ServiceGenerator(name string) error {
 	return nil
 }
 
+func CacheGenerator() error {
+	path := getCurrentPath()
+	fc, err := os.Create("internal/api/cache/" + "cache.go")
+	fc.WriteString("package cache\n\nimport (\n\t\"" + path + "/internal/config\"\n\t\"fmt\"\n\t\"github.com/go-redis/redis\"\n\t\"time\"\n)\n\nvar RedisClient *redis.Client\n\nfunc InitRedis() (*redis.Client, error) {\n\tredisConfig := config.Conf.Redis\n\tRedisClient = redis.NewClient(&redis.Options{\n\t\tAddr:        redisConfig.Addr,     // Redis地址\n\t\tPassword:    redisConfig.Password, // Redis账号\n\t\tDB:          redisConfig.DB,       // Redis库\n\t\tPoolSize:    10,                   // Redis连接池大小\n\t\tMaxRetries:  3,                    // 最大重试次数\n\t\tIdleTimeout: 10 * time.Second,     // 空闲链接超时时间\n\t})\n\tpong, err := RedisClient.Ping().Result()\n\tfmt.Print(pong, err)\n\treturn RedisClient, err\n}\n")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // RunCommand 执行初始化命令
 // TODO: RunCommand
 func RunCommand() error {

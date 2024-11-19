@@ -14,6 +14,7 @@ var opts struct {
 	Update    bool `short:"u" long:"update"`
 	Service   bool `short:"s" long:"service"`
 	Store     bool `short:"f" long:"factory"`
+	Redis     bool `short:"r" long:"redis"`
 }
 
 func main() {
@@ -147,6 +148,12 @@ func main() {
 			}
 		}
 		err := generator.ServiceGenerator(name)
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+	} else if opts.Redis {
+		err := generator.CacheGenerator()
 		if err != nil {
 			fmt.Println(err.Error())
 			return

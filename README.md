@@ -1,4 +1,4 @@
-# spg-go-framework
+# framework-gorm
 
 ## 项目介绍
 
