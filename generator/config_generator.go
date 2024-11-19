@@ -29,6 +29,7 @@ func GenerateModels(ConfigFilePath string, GenerateModelPath string) {
 	if err != nil {
 		log.Panic(err)
 	}
+	processMap(config.(map[string]interface{}))
 	f, err := os.Create(GenerateModelPath)
 	if err != nil {
 		log.Panic(err.Error())
@@ -100,5 +101,26 @@ func getType(val interface{}) string {
 		return "interface"
 	} else {
 		return "halt"
+	}
+}
+
+// toInt 如果 f 是整数，则返回 int 类型的值，否则返回原始 float64
+func toInt(f float64) interface{} {
+	// 检查 f 是否为整数
+	if float64(int(f)) == f {
+		return int(f)
+	}
+	return f
+}
+
+// processMap 递归处理 map 中的所有值
+func processMap(m map[string]interface{}) {
+	for k, v := range m {
+		switch v := v.(type) {
+		case map[string]interface{}:
+			processMap(v) // 递归处理嵌套 map
+		case float64:
+			m[k] = toInt(v) // 处理数字，确保整数被转换为 int
+		}
 	}
 }

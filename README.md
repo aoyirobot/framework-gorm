@@ -16,6 +16,7 @@
 $ framework-gorm -v
 ````
 2.生成目录结构
+
 ````bash
 $ framework-gorm -g
 ````
@@ -224,6 +225,7 @@ $ framework-gorm -r
 * /internal/api/api_admin/route.go: 路由
 * /internal/store/store.go: 数据层dao生产代码
 * /internal/store/factory.go: 数据层dao工厂代码
+* /internal/store/cache.go: redis的初始化代码
 * /internal/config/config.go: 根据config.json文件生成的配置结构体
 * /internal/config/config_init.go: 初始化配置结构体
 * /internal/crontab: 定时任务
