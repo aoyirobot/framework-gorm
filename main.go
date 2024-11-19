@@ -25,7 +25,7 @@ func main() {
 	}
 	_, err = flags.ParseArgs(&opts, os.Args)
 	if opts.Version {
-		fmt.Println("v2.0.3")
+		fmt.Println("v2.0.4")
 	} else if opts.Update {
 		generator.GenerateModels(getwd+"/config.json", getwd+"/internal/config/config.go")
 	} else if opts.Generator {
