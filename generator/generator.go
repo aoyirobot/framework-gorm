@@ -190,7 +190,7 @@ func CmdGenerator(name string, port string) error {
 	if err != nil {
 		return err
 	}
-	fcc.WriteString("package main\n\nimport (\n\t\"" + path + "/internal/api/" + name + "\"\n\t\"" + path + "/internal/api/store\"\n\t\"" + path + "/internal/config\"\n)\n\nfunc main() {\n\tport := \"" + port + "\"\n\t//初始化代码配置\n\t_, err := config.InitConfig()\n\tif err != nil {\n\t\tpanic(\"配置初始化失败\" + err.Error())\n\t}\n\t//初始化数据层\n\tfactory, err := store.GetFactory()\n\tif err != nil {\n\t\tpanic(\"数据层初始化失败\" + err.Error())\n\t}\n\t//初始化路由\n\trouter, err := " + name + ".RouterInit(factory)\n\terr = router.Run(\":\"+port)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n}\n")
+	fcc.WriteString("package main\n\nimport (\n\t\"" + path + "/internal/api/api_admin\"\n\t\"" + path + "/internal/api/cache\"\n\t\"" + path + "/internal/api/store\"\n\t\"" + path + "/internal/config\"\n)\n\nfunc main() {\n\tport := \"9090\"\n\t//初始化代码配置\n\t_, err := config.InitConfig()\n\tif err != nil {\n\t\tpanic(\"配置初始化失败\" + err.Error())\n\t}\n\t//初始化数据层\n\tfactory, err := store.GetFactory()\n\tif err != nil {\n\t\tpanic(\"数据层初始化失败\" + err.Error())\n\t}\n\t// 初始化redis\n\tredis, err := cache.InitRedis()\n\tif err != nil {\n\t\tpanic(\"缓存初始化失败\" + err.Error())\n\t}\n\t//初始化路由\n\trouter, err := api_admin.RouterInit(factory)\n\terr = router.Run(\":\" + port)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n}\n")
 	return nil
 }
 
