@@ -25,7 +25,7 @@ func main() {
 	}
 	_, err = flags.ParseArgs(&opts, os.Args)
 	if opts.Version {
-		fmt.Println("v1.0.1")
+		fmt.Println("v2.0.1")
 	} else if opts.Update {
 		generator.GenerateModels(getwd+"/config.json", getwd+"/internal/config/config.go")
 	} else if opts.Generator {
@@ -158,6 +158,7 @@ func main() {
 			fmt.Println(err.Error())
 			return
 		}
+		fmt.Println("redis配置成功!")
 	}
 
 }

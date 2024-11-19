@@ -34,6 +34,12 @@ $ framework-gorm -f
 $ framework-gorm -s
 ````
 
+6.生成redis
+
+```bash
+$ framework-gorm -r
+```
+
 ## 项目使用
 
 1. 下载工具
@@ -158,6 +164,12 @@ $ framework-gorm -s
 code
 ````
 
+7. 生成redis
+
+```bash
+$ framework-gorm -r
+```
+
 ## 项目目录介绍
 
 1.目录结构
@@ -184,8 +196,10 @@ code
 │   │   │   │  └──service.go
 │   │   │   └──route.go
 │   │   └── store
-│   │       ├──store.go
-│   │       └──factory.go
+│   │   |   ├──store.go
+│   │   |   └──factory.go
+│   │   └── cache
+│   │       └──cache.go
 │   ├── config
 │   │   ├──config.go
 │   │   └──config_init.go
