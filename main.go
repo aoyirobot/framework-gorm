@@ -15,9 +15,11 @@ var opts struct {
 	Service   bool `short:"s" long:"service"`
 	Store     bool `short:"f" long:"factory"`
 	Redis     bool `short:"r" long:"redis"`
+	Model     bool `short:"m" long:"model"`
 }
 
 func main() {
+
 	getwd, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
@@ -25,7 +27,7 @@ func main() {
 	}
 	_, err = flags.ParseArgs(&opts, os.Args)
 	if opts.Version {
-		fmt.Println("v2.0.4")
+		fmt.Println("v2.0.8")
 	} else if opts.Update {
 		generator.GenerateModels(getwd+"/config.json", getwd+"/internal/config/config.go")
 	} else if opts.Generator {
@@ -159,6 +161,9 @@ func main() {
 			return
 		}
 		fmt.Println("redis配置成功!")
+	} else if opts.Model {
+		generator.GenerateModel()
+		fmt.Println("model配置成功!")
 	}
 
 }

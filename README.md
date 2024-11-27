@@ -6,7 +6,7 @@
 
 ## 项目源码
 
-> #### https://github.com/aoyirobot/framework-gorm
+#### https://github.com/aoyirobot/framework-gorm
 
 ## 命令列表
 
@@ -41,6 +41,12 @@ $ framework-gorm -s
 $ framework-gorm -r
 ```
 
+7.生成model
+
+```bash
+$ framework-gorm -m
+```
+
 ## 项目使用
 
 1. 下载工具
@@ -50,7 +56,7 @@ $ framework-gorm -r
 $ go install github.com/aoyirobot/framework-gorm@latest
 ````
 >下载完成后可运行版本校验命令检测是否安装成功
-````
+````bash
 $ framework-gorm -v
 ````
 
@@ -76,6 +82,11 @@ $ framework-gorm -v
     "show_sql": "true",
     "parseTime": "true",
     "loc": "Asia/Shanghai"
+  },
+  "redis" :  {
+    "addr":  "127.0.0.1:6379",
+    "password" :  "",
+    "db" : 1
   }
 }
 ```
@@ -84,7 +95,7 @@ $ framework-gorm -v
 
 4. 构建go.mod文件，如下：
 
-```
+```go
 module myProject
 
 go 1.20
@@ -101,26 +112,24 @@ require golang.org/x/sys v0.21.0 // indirect
 
 5. 在之前创建的文件夹下，编译器命令行执行命令构建目录
 
-````
+````bash
 $ framework-gorm -g
 ````
 
 4.命令执行过程
 
-(1).初始化go.mod,生成相关目录
+(1).初始化go.mod，生成相关目录
 
-````
-初始化go.mod,下载相关依赖
-生成目录结构成功    
-生成配置文件成功    
-生成数据库目录成功  
-````
+初始化go.mod，下载相关依赖
+生成目录结构成功 
+生成配置文件成功 
+生成数据库目录成功 
 
 (2).构建所需系统的目录结构
 
 >系统名称只能包含字母、'-'、'_'
 
-````
+````bash
 请输入开发系统数量：
 2
 请输入开发系统名称：
@@ -139,13 +148,13 @@ api_wx
 
 >项目根目录运行下面命令
 
-````
+````bash
 $ framework-gorm -f
 ````
 
 >看到提示后输入需要生成store的名称，只能包含字母和下划线
 
-````
+````bash
 请输入store名称：
 code
 ````
@@ -154,13 +163,13 @@ code
 
 >在需要生成的service目录下执行下面命令
 
-````
+````bash
 $ framework-gorm -s
 ````
 
 >看到提示后输入需要生成service的名称，只能包含字母和下划线
 
-````
+````bash
 请输入service名称：
 code
 ````
@@ -171,11 +180,21 @@ code
 $ framework-gorm -r
 ```
 
+7. 生成model
+
+将mysql建表脚本语句放在目录./database下，运行下述命令即可在/internal/model目录下生成model文件
+
+```bash
+$ framework-gorm -m
+```
+
 ## 项目目录介绍
 
 1.目录结构
 
-````
+````bash
+├── database
+│   ├── your.sql
 ├── api
 │   ├── dokcer
 │   │   └── api_admin
@@ -216,6 +235,7 @@ $ framework-gorm -r
 
 * /api/docker: 根据系统存放系统的Dockerfile文件，可用于cicd部署或者生成容器
 * /api/swagger: swagger接口文档存放地址
+* database:存放待生成model的建表脚本语句
 * /cmd: main文件存放地址
 * /internal/api: 项目代码存放目录
 * /internal/api/api_admin: 根据输入的系统名称所生成的目录用于区分不同系统的代码
@@ -240,7 +260,7 @@ $ framework-gorm -r
 1.关于配置文件在开发过程中的修改
 
 >在开发过程中config.json文件的格式可能会出现变动，此时不需要修改生成的config.go文件只需要运行下面的命令即可更新配置文件结构体
-````
+````bash
 $ framework-gorm -u
 ````
 
