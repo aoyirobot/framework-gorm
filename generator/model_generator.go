@@ -78,7 +78,7 @@ func generateModelsFromSQL(sqlFilePath string, modelFolder string) error {
 			// 如果当前表正在处理中，则保存模型并开始处理下一个表
 			if currentTableName != "" {
 				// 保存当前表的模型到文件
-				modelFilePath := fmt.Sprintf("%s/%s.go", modelFolder, toCamelCase(currentTableName))
+				modelFilePath := fmt.Sprintf("%s/%s.go", modelFolder, strings.ToLower(toCamelCase(currentTableName)))
 				modelContent.WriteString("}\n\n") // 确保每个结构体正确关闭
 				if err := os.WriteFile(modelFilePath, []byte(modelContent.String()), 0644); err != nil {
 					return err
@@ -91,7 +91,7 @@ func generateModelsFromSQL(sqlFilePath string, modelFolder string) error {
 			currentTableName = extractTableName(line)
 			if currentTableName != "" {
 				modelContent.WriteString(fmt.Sprintf("package model\n\n"))
-				modelContent.WriteString(fmt.Sprintf("type %s struct {\n", toCamelCase(currentTableName)))
+				modelContent.WriteString(fmt.Sprintf("type %s struct {\n", strings.Title(toCamelCase(currentTableName))))
 				primaryKeyFields = []string{} // 重置主键字段列表
 				primaryKeyAdded = false       // 重置主键添加标志
 				tableColumns = []string{}     // 重置列定义
@@ -113,7 +113,7 @@ func generateModelsFromSQL(sqlFilePath string, modelFolder string) error {
 			}
 
 			// 完成当前表的定义
-			modelFilePath := fmt.Sprintf("%s/%s.go", modelFolder, toCamelCase(currentTableName))
+			modelFilePath := fmt.Sprintf("%s/%s.go", modelFolder, strings.ToLower(toCamelCase(currentTableName)))
 			modelContent.WriteString("}\n\n") // 确保结构体正确关闭
 			if err := os.WriteFile(modelFilePath, []byte(modelContent.String()), 0644); err != nil {
 				return err
@@ -134,7 +134,7 @@ func generateModelsFromSQL(sqlFilePath string, modelFolder string) error {
 
 	// 如果最后一个表没有写入文件（例如SQL没有以“);”结尾）
 	if currentTableName != "" {
-		modelFilePath := fmt.Sprintf("%s/%s.go", modelFolder, toCamelCase(currentTableName))
+		modelFilePath := fmt.Sprintf("%s/%s.go", modelFolder, strings.ToLower(toCamelCase(currentTableName)))
 		modelContent.WriteString("}\n\n") // 确保结构体正确关闭
 		if err := os.WriteFile(modelFilePath, []byte(modelContent.String()), 0644); err != nil {
 			return err
@@ -246,8 +246,8 @@ func processPrimaryKey(tableColumns []string, modelContent *strings.Builder, pri
 // Map SQL types to Go types
 func mapSQLTypeToGoType(sqlType string) string {
 	switch sqlType {
-	case "int", "integer":
-		return "int" // Changed from uint to int
+	case "int", "integer", "tinyint":
+		return "int"
 	case "varchar", "text":
 		return "string"
 	case "double":
@@ -256,6 +256,8 @@ func mapSQLTypeToGoType(sqlType string) string {
 		return "time.Time"
 	case "bit":
 		return "bool"
+	case "decimal":
+		return "decimal.Decimal"
 	default:
 		return "string" // Default fallback type
 	}
